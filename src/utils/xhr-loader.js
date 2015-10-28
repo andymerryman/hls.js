@@ -6,6 +6,9 @@ import {logger} from '../utils/logger';
 
 class XhrLoader {
 
+  byteRangeOffset;
+  byteRangeLength;
+
   constructor(config) {
     if (config && config.xhrSetup) {
       this.xhrSetup = config.xhrSetup;
@@ -27,7 +30,7 @@ class XhrLoader {
     }
   }
 
-  load(url, responseType, onSuccess, onError, onTimeout, timeout, maxRetry, retryDelay, onProgress = null) {
+  load(url, responseType, onSuccess, onError, onTimeout, timeout, maxRetry, retryDelay, onProgress = null, options = null) {
     this.url = url;
     this.responseType = responseType;
     this.onSuccess = onSuccess;
@@ -39,6 +42,10 @@ class XhrLoader {
     this.maxRetry = maxRetry;
     this.retryDelay = retryDelay;
     this.timeoutHandle = window.setTimeout(this.loadtimeout.bind(this), timeout);
+    if (options !== null){
+      this.byteRangeLength = options.byteRangeLength;
+      this.byteRangeOffset = options.byteRangeOffset;
+    }
     this.loadInternal();
   }
 
@@ -49,6 +56,10 @@ class XhrLoader {
     xhr.onprogress = this.loadprogress.bind(this);
     xhr.open('GET', this.url, true);
     xhr.responseType = this.responseType;
+    if (this.byteRangeLength > 0){
+      console.log(this.url+' | Range : bytes='+this.byteRangeOffset+'-'+this.byteRangeLength);
+      xhr.setRequestHeader('Range', 'bytes='+this.byteRangeOffset+'-'+this.byteRangeLength);
+    }
     this.stats.tfirst = null;
     this.stats.loaded = 0;
     if (this.xhrSetup) {
