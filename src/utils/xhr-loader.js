@@ -57,8 +57,8 @@ class XhrLoader {
     xhr.open('GET', this.url, true);
     xhr.responseType = this.responseType;
     if (this.byteRangeLength > 0){
-      console.log(this.url+' | Range : bytes='+this.byteRangeOffset+'-'+this.byteRangeLength);
-      xhr.setRequestHeader('Range', 'bytes='+this.byteRangeOffset+'-'+this.byteRangeLength);
+      console.log(this.url+' | Range : bytes='+this.byteRangeOffset+'-'+(this.byteRangeOffset+this.byteRangeLength-1));
+      xhr.setRequestHeader('Range', 'bytes='+this.byteRangeOffset+'-'+(this.byteRangeOffset+this.byteRangeLength-1));
     }
     this.stats.tfirst = null;
     this.stats.loaded = 0;

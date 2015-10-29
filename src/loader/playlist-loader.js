@@ -138,8 +138,8 @@ class PlaylistLoader {
               hasByteRange = result[2].indexOf("BYTERANGE") !== -1,
               fragment = {url: this.resolve(fragmentPath, baseurl), duration: duration, start: totalduration, sn: currentSN++, level: id, cc: cc};
             if (!!hasByteRange && !isNaN(result[3]) && !isNaN(result[4])){
-              fragment.byteRangeLength = result[3];
-              fragment.byteRangeOffset = result[4];
+              fragment.byteRangeLength = parseInt(result[3]);
+              fragment.byteRangeOffset = parseInt(result[4]);
             }
             level.fragments.push(fragment);
             totalduration += duration;
